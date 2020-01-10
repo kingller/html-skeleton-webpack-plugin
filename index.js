@@ -113,10 +113,11 @@ class PandoraSkeletonWebpackPlugin {
           css = css.replace(/\s*$/, '');
         }
         if (css) {
-          html = html.replace(/<\/head>/, `<style type="text/css">
+          html = html.replace(/\n*([ \t]*)<\/head>/, `
+<style type="text/css">
   ${css}
 </style>
-</head>`);
+$1</head>`);
         }
         if (typeof processHtml === 'function') {
           html = processHtml(html, skeletonHtml);
