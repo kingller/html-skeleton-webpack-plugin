@@ -20,6 +20,9 @@
     "name": "Kingller Tang",
     "url": "https://github.com/kingller"
   },
+  "files": [
+    "index.js"
+  ],
   "main": "index.js",
   "scripts": {},
   "peerDependencies": {
