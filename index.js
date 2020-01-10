@@ -7,58 +7,62 @@ const error = msg => {
 
 class PandoraSkeletonWebpackPlugin {
   constructor(options = {}) {
-    if (
-      typeof options.processHtml !== 'undefined' && 
-      typeof options.processHtml !== 'string' && 
-      typeof options.processHtml !== 'object' && 
-      typeof options.processHtml !== 'function'
-    ) {
-      warn("options.processHtml expected to be string or RegExp or function!");
-    }
-    if (typeof options.css !== 'undefined' && typeof options.css !== 'string') {
-      warn("options.css expected to be string!");
-    }
     this._options = {
-      processHtml: options.processHtml || /<!--\s*skeleton\s*-->/,
-      css: options.css,
+      processHtml: /<!--\s*skeleton\s*-->/,
+      css: undefined,
+      header: true,
+      left: true,
       htmlPluginName: options.htmlPluginName || 'html-webpack-plugin',
     };
+    if (typeof options.processHtml !== 'undefined') {
+      if (
+        typeof options.processHtml !== 'string' &&
+        typeof options.processHtml !== 'object' &&
+        typeof options.processHtml !== 'function'
+      ) {
+        warn("options.processHtml expected to be string or RegExp or function!");
+      } else {
+        this._options.processHtml = options.processHtml;
+      }
+    }
+    if (typeof options.css !== 'undefined') {
+      if (typeof options.css !== 'string') {
+        warn("options.css expected to be string!");
+      } else {
+        this._options.css = options.css;
+      }
+    }
+    if (typeof options.header !== 'undefined') {
+      if (typeof options.header !== 'boolean') {
+        warn("options.header expected to be boolean!");
+      } else {
+        this._options.header = options.header;
+      }
+    }
+    if (typeof options.left !== 'undefined') {
+      if (typeof options.left !== 'boolean') {
+        warn("options.left expected to be boolean!");
+      } else {
+        this._options.left = options.left;
+      }
+    }
   }
 
   apply(compiler) {
     compiler.hooks.compilation.tap(PLUGIN_NAME, compilation => {
       // Hook into the html-webpack-plugin processing
       const onBeforeHtmlProcessing = (htmlPluginData, callback) => {
-        const skeletonCss = `.pdr-page-head-skeleton {
-    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-    background-size: 400% 100%;
-    -webkit-animation: pdr-page-skeleton-loading 1.4s ease infinite;
-    animation: pdr-page-skeleton-loading 1.4s ease infinite;
-  }
-  .pdr-page-left-skeleton {
-    height: 100%;
-    background: linear-gradient(to bottom, #f2f2f2 65%, #ffff 65%, #ffff 100%);
-    background-size: 100% 50px;
-  }
-  .pdr-page-content-skeleton {
-    height: 100%;
-    background:url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBoZWlnaHQ9IjE2IiB3aWR0aD0iNDAlIiB5PSI5IiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjEwMCUiIHk9IjUwIiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjEwMCUiIHk9IjgyIiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjcwJSIgeT0iMTE2IiBmaWxsPSIjZjJmMmYyIi8+PC9zdmc+);
-  }
-  @keyframes pdr-page-skeleton-loading {
-    0% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0 50%;
-    }
-  }`;
-      const skeletonHtml = `
-  <div style="height: 100vh;">
-    <div style="height: 55px;" class="pdr-page-head-skeleton"></div>
-    <div style="height: calc(100vh - 55px);">
+        let { css, header, left, processHtml } = this._options;
+        
+        const skeletonHeaderHtml = `
+    <div style="height: 55px;" class="pdr-page-head-skeleton"></div>`;
+        const skeletonLeftHtml = `
       <div style="float: left; width: 300px; height: 100%; padding: 20px 20px 0;">
-         <div class="pdr-page-left-skeleton"></div>
-      </div>
+        <div class="pdr-page-left-skeleton"></div>
+      </div>`;
+        const skeletonHtml = `
+  <div style="height: 100vh;">${header? skeletonHeaderHtml: ''}
+    <div style="height: ${header? 'calc(100vh - 55px)': '100%'};">${left? skeletonLeftHtml: ''}
       <div style="overflow: hidden; height: 100%; padding: 20px 20px 0;">
         <div class="pdr-page-content-skeleton"></div>
       </div>
@@ -66,9 +70,47 @@ class PandoraSkeletonWebpackPlugin {
   </div>
 `;
         let { html } = htmlPluginData;
-        let { css, processHtml } = this._options;
         if (typeof css !== 'string') {
-          css = skeletonCss;
+          const skeletonHeaderCss = `.pdr-page-head-skeleton {
+    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+    background-size: 400% 100%;
+    -webkit-animation: pdr-page-skeleton-loading 1.4s ease infinite;
+    animation: pdr-page-skeleton-loading 1.4s ease infinite;
+  }
+  `;
+          const skeletonHeaderAnimation = `@keyframes pdr-page-skeleton-loading {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+  `;
+          const skeletonLeftCss = `.pdr-page-left-skeleton {
+    height: 100%;
+    background: linear-gradient(to bottom, #f2f2f2 65%, #ffff 65%, #ffff 100%);
+    background-size: 100% 50px;
+  }
+  `;
+          const skeletonContentCss = `.pdr-page-content-skeleton {
+    height: 100%;
+    background:url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBoZWlnaHQ9IjE2IiB3aWR0aD0iNDAlIiB5PSI5IiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjEwMCUiIHk9IjUwIiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjEwMCUiIHk9IjgyIiBmaWxsPSIjZjJmMmYyIi8+PHJlY3QgaGVpZ2h0PSIxNiIgd2lkdGg9IjcwJSIgeT0iMTE2IiBmaWxsPSIjZjJmMmYyIi8+PC9zdmc+);
+  }
+  `;
+
+          css = '';
+          if (header) {
+            css += skeletonHeaderCss;
+          }
+          if(left) {
+            css += skeletonLeftCss;
+          }
+          css += skeletonContentCss;
+          if (header) {
+            css += skeletonHeaderAnimation;
+          }
+          css = css.replace(/\s*$/, '');
         }
         if (css) {
           html = html.replace(/<\/head>/, `<style type="text/css">
