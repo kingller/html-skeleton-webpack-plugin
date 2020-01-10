@@ -1,5 +1,5 @@
 {
-  "name": "@pandora/skeleton-webpack-plugin",
+  "name": "html-skeleton-webpack-plugin",
   "version": "1.0.0",
   "description": "This webpack plugin is designed for generate the skeleton screen for page",
   "keywords": [

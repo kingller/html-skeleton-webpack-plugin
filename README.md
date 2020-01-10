@@ -1,10 +1,10 @@
-# @pandora/skeleton-webpack-plugin
+# html-skeleton-webpack-plugin
 This webpack plugin is designed for generate the skeleton screen for page.
 
 ## Install
 
 ```bash
-npm i -D @pandora/skeleton-webpack-plugin
+npm i -D html-skeleton-webpack-plugin
 ``` 
 
 ## Usage
@@ -12,7 +12,7 @@ npm i -D @pandora/skeleton-webpack-plugin
 In your webpack configuration (`webpack.config.js`):
 
 ```javascript
-const SkeletonWebpackPlugin = require('@pandora/skeleton-webpack-plugin');
+const SkeletonWebpackPlugin = require('html-skeleton-webpack-plugin');
 
 module.exports = {
     //...

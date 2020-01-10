@@ -1,6 +1,6 @@
 'use strict';
 
-const PLUGIN_NAME = "PandoraSkeletonWebpackPlugin";
+const PLUGIN_NAME = "HtmlSkeletonWebpackPlugin";
 const warn = msg => console.warn(`\u001b[33m[${PLUGIN_NAME}] ${msg}\u001b[39m`);
 const error = msg => {
   console.error(`\u001b[31mERROR: [${PLUGIN_NAME}] ${msg}\u001b[39m`);
@@ -147,12 +147,12 @@ $1</head>`);
           const hooks = HtmlWebpackPlugin.getHooks(compilation);
           const htmlPlugins = compilation.options.plugins.filter(plugin => plugin instanceof HtmlWebpackPlugin);
           if (htmlPlugins.length === 0) {
-            const message = "Error running @pandora/skeleton-webpack-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?";
+            const message = "Error running html-skeleton-webpack-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?";
             error(message);
           }
           hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(PLUGIN_NAME, onBeforeHtmlProcessing);
         } else {
-          const message = "Error running @pandora/skeleton-webpack-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?";
+          const message = "Error running html-skeleton-webpack-plugin, are you sure you have html-webpack-plugin before it in your webpack config's plugins?";
           error(message);
         }
       }
