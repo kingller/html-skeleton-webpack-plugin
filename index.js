@@ -7,7 +7,7 @@ const error = msg => {
   throw new Error(msg);
 };
 
-class PandoraSkeletonWebpackPlugin {
+class HtmlSkeletonWebpackPlugin {
   constructor(options = {}) {
     this._options = {
       processHtml: /<!--\s*skeleton\s*-->/,
@@ -160,4 +160,4 @@ $1</head>`);
   }
 }
 
-module.exports = PandoraSkeletonWebpackPlugin;
+module.exports = HtmlSkeletonWebpackPlugin;

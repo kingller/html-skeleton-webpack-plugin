@@ -25,7 +25,7 @@ module.exports = {
 >   __NOTE__: You should add it after `html-webpack-plugin`
 
 
-![skeleton screenshot](https://raw.githubusercontent.com/kingller/pandora-skeleton-webpack-plugin/master/example/images/screenshot.png)
+![skeleton screenshot](https://raw.githubusercontent.com/kingller/html-skeleton-webpack-plugin/master/example/images/screenshot.png)
 
 ## Options
 
