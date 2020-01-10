@@ -12,12 +12,12 @@ npm i -D html-skeleton-webpack-plugin
 In your webpack configuration (`webpack.config.js`):
 
 ```javascript
-const SkeletonWebpackPlugin = require('html-skeleton-webpack-plugin');
+const HtmlSkeletonWebpackPlugin = require('html-skeleton-webpack-plugin');
 
 module.exports = {
     //...
     plugins: [
-        new SkeletonWebpackPlugin()
+        new HtmlSkeletonWebpackPlugin()
     ]
 }
 ```
