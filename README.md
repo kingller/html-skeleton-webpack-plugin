@@ -41,7 +41,7 @@ Whether to show the left.
 
 ### processHtml
 string or RegExp or function. Default value is `/<!--\s*skeleton\s*-->/`.  
-`<!-- skeleton -->` in html template will be replaced to skeleton screen code by default.
+`<!-- skeleton -->` in html template will be replaced with skeleton screen code by default.
 
 
 ### css
