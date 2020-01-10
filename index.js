@@ -1,3 +1,5 @@
+'use strict';
+
 const PLUGIN_NAME = "PandoraSkeletonWebpackPlugin";
 const warn = msg => console.warn(`\u001b[33m[${PLUGIN_NAME}] ${msg}\u001b[39m`);
 const error = msg => {
