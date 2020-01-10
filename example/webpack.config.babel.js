@@ -27,6 +27,7 @@ let config = {
                 use: {
                     loader: 'babel-loader',
                 },
+                exclude: /\/node_modules\//
             },
         ],
     },

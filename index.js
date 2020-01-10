@@ -26,8 +26,8 @@ class PandoraSkeletonWebpackPlugin {
       }
     }
     if (typeof options.css !== 'undefined') {
-      if (typeof options.css !== 'string') {
-        warn("options.css expected to be string!");
+      if (typeof options.css !== 'string' && typeof options.css !== 'function') {
+        warn("options.css expected to be string or function!");
       } else {
         this._options.css = options.css;
       }
@@ -99,18 +99,23 @@ class PandoraSkeletonWebpackPlugin {
   }
   `;
 
-          css = '';
+          let generatedCss = '';
           if (header) {
-            css += skeletonHeaderCss;
+            generatedCss += skeletonHeaderCss;
           }
           if(left) {
-            css += skeletonLeftCss;
+            generatedCss += skeletonLeftCss;
           }
-          css += skeletonContentCss;
+          generatedCss += skeletonContentCss;
           if (header) {
-            css += skeletonHeaderAnimation;
+            generatedCss += skeletonHeaderAnimation;
           }
-          css = css.replace(/\s*$/, '');
+          generatedCss = generatedCss.replace(/\s*$/, '');
+          if (typeof css === 'function') {
+            css = css(generatedCss);
+          } else {
+            css = generatedCss;
+          }
         }
         if (css) {
           html = html.replace(/\n*([ \t]*)<\/head>/, `

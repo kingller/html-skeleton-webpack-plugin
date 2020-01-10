@@ -6,4 +6,7 @@ const App = (
         Example
     </div>
 );
-ReactDOM.render(App, document.getElementById('app'));
+// In order to demonstrate the skeleton screen, the display is delayed here, you should not do this.
+setTimeout(function () {
+    ReactDOM.render(App, document.getElementById('app'));
+}, 3000);
